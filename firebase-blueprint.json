@@ -1,0 +1,224 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System user with specific roles and access",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "username": { "type": "string" },
+        "full_name": { "type": "string" },
+        "dni": { "type": "string" },
+        "password": { "type": "string" },
+        "role": { "type": "string" },
+        "branch_ids": { "type": "array" },
+        "zone_ids": { "type": "array" }
+      },
+      "required": ["id", "username", "password", "role"]
+    },
+    "Zone": {
+      "title": "Zone",
+      "description": "Geographical or organizational zone",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "name"]
+    },
+    "Branch": {
+      "title": "Branch",
+      "description": "Physical branch or location",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "zone_id": { "type": "string" },
+        "tipo_cine": { "type": "string", "enum": ["PRIME", "CLASICO"] }
+      },
+      "required": ["id", "name", "tipo_cine"]
+    },
+    "KpiConfig": {
+      "title": "KpiConfig",
+      "description": "Configuration for a KPI metric",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "formula": { "type": "string" },
+        "method": { "type": "string" },
+        "target": { "type": "number" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name"]
+    },
+    "Request": {
+      "title": "Request",
+      "description": "Administrative request for changes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "details": { "type": "object" },
+        "status": { "type": "string" },
+        "requester_id": { "type": "string" },
+        "reason": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "type", "requester_id"]
+    },
+    "Survey": {
+      "title": "Survey",
+      "description": "Customer experience survey configuration",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "config": { "type": "object" },
+        "branch_ids": { "type": "array" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title"]
+    },
+    "Response": {
+      "title": "Response",
+      "description": "Customer survey response summary",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "unique_code": { "type": "string" },
+        "survey_id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "branch_id": { "type": "string" },
+        "customer_comment": { "type": "string" },
+        "sentiment": { "type": "string" },
+        "sentiment_score": { "type": "number" },
+        "nps_score": { "type": "integer" },
+        "csat_score": { "type": "integer" },
+        "ces_score": { "type": "integer" },
+        "cx_score": { "type": "number" },
+        "is_valid": { "type": "boolean" },
+        "kpi_nps": { "type": "integer" },
+        "kpi_csat_dulceria": { "type": "integer" },
+        "kpi_csat_proyeccion": { "type": "integer" },
+        "kpi_csat_amabilidad": { "type": "integer" },
+        "kpi_csat_ingreso": { "type": "integer" },
+        "kpi_csat_comodidad": { "type": "integer" },
+        "kpi_csat_limpieza_salas": { "type": "integer" },
+        "kpi_csat_limpieza_baños": { "type": "integer" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "survey_id", "user_id", "branch_id"]
+    },
+    "Answer": {
+      "title": "Answer",
+      "description": "Individual question answer",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "response_id": { "type": "string" },
+        "question_key": { "type": "string" },
+        "value": { "type": "string" },
+        "comment": { "type": "string" }
+      },
+      "required": ["id", "response_id", "question_key", "value"]
+    },
+    "Alert": {
+      "title": "Alert",
+      "description": "System alert based on survey performance",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "response_id": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "response_id", "message"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Records of system actions for auditing",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "user_name": { "type": "string" },
+        "action": { "type": "string", "enum": ["CREATE", "UPDATE", "DELETE", "LOGIN", "LOGOUT"] },
+        "resource_type": { "type": "string" },
+        "resource_id": { "type": "string" },
+        "branch_id": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["user_id", "action", "resource_type", "timestamp"]
+    },
+    "Goal": {
+      "title": "Goal",
+      "description": "Monthly goal for an indicator at a branch or zone",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "indicator": { "type": "string" },
+        "target": { "type": "number" },
+        "month": { "type": "integer" },
+        "year": { "type": "integer" },
+        "branch_id": { "type": "string" },
+        "zone_id": { "type": "string" },
+        "type": { "type": "string", "enum": ["BRANCH", "ZONE"] }
+      },
+      "required": ["id", "indicator", "target", "month", "year", "type"]
+    }
+  },
+  "firestore": {
+    "users": {
+      "schema": "User",
+      "description": "Collection of system users"
+    },
+    "zones": {
+      "schema": "Zone",
+      "description": "Collection of geographical zones"
+    },
+    "branches": {
+      "schema": "Branch",
+      "description": "Collection of Cinema branches"
+    },
+    "kpi_configs": {
+      "schema": "KpiConfig",
+      "description": "Global KPI configurations"
+    },
+    "requests": {
+      "schema": "Request",
+      "description": "User requests for deletions or changes"
+    },
+    "surveys": {
+      "schema": "Survey",
+      "description": "Survey configurations"
+    },
+    "responses": {
+      "schema": "Response",
+      "description": "Survey responses"
+    },
+    "responses/{responseId}/answers": {
+      "schema": "Answer",
+      "description": "Individual answers for a response"
+    },
+    "alerts": {
+      "schema": "Alert",
+      "description": "System performance alerts"
+    },
+    "audit_logs": {
+      "schema": "AuditLog",
+      "description": "Detailed system audit and activity logs"
+    },
+    "goals": {
+      "schema": "Goal",
+      "description": "Collection of monthly goals"
+    }
+  }
+}
